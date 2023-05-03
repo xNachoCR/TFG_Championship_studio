@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.tfg_championship_studio.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:name="com.example.tfg_championship_studio.ui.gestparticipantes.GestParticipantesFragment"
+        android:label="@string/menu_gest_participantes"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.tfg_championship_studio.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:name="com.example.tfg_championship_studio.ui.mistorneos.MisTorneosFragment"
+        android:label="@string/menu_mis_torneos"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.tfg_championship_studio.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:name="com.example.tfg_championship_studio.ui.ajustes.AjustesFragment"
+        android:label="@string/menu_ajustes"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
