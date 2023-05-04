@@ -9,17 +9,17 @@
         android:id="@+id/nav_home"
         android:name="com.example.tfg_championship_studio.ui.gestparticipantes.GestParticipantesFragment"
         android:label="@string/menu_gest_participantes"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_gest_participantes" />
 
     <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.tfg_championship_studio.ui.mistorneos.MisTorneosFragment"
         android:label="@string/menu_mis_torneos"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_mis_torneos" />
 
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.tfg_championship_studio.ui.ajustes.AjustesFragment"
         android:label="@string/menu_ajustes"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_mis_torneos" />
 </navigation>
