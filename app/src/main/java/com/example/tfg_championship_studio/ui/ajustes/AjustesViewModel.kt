@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 class AjustesViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+        value = "Esta es la ventana de ajustes"
     }
     val text: LiveData<String> = _text
+
+
 }

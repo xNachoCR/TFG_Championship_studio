@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class GestParticipantesViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "Esta es la ventana de gestión de participantes"
     }
     val text: LiveData<String> = _text
 }

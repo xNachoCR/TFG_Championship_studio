@@ -24,4 +24,9 @@
     <string name="btn_sign_up">SIGN UP</string>
     <string name="txt_below_login">login with</string>
     <string name="txt_below_sign_up">or sign up with</string>
+
+    <string name="item_torneo_nparticipantes">Nº Participantes:</string>
+    <string name="item_torneo_icon_desc">Tournament Type Icon</string>
+
+
 </resources>

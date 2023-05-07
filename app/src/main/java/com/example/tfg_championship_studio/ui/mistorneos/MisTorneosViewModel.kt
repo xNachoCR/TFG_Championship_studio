@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class MisTorneosViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+        value = "Esta es la ventana de gestión de tus torneos"
     }
     val text: LiveData<String> = _text
 }
