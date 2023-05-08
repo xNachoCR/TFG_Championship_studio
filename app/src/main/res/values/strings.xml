@@ -27,6 +27,8 @@
 
     <string name="item_torneo_nparticipantes">Nº Participantes:</string>
     <string name="item_torneo_icon_desc">Tournament Type Icon</string>
+    <string name="item_torneo_edit_button">EDITAR</string>
+    <string name="item_torneo_delete_button">ELIMINAR</string>
 
 
 </resources>
