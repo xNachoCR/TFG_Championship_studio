@@ -19,6 +19,7 @@
             android:layout_weight="0.1">
 
             <ImageView
+                android:id="@+id/item_sport"
                 android:contentDescription="@string/item_torneo_icon_desc"
                 android:layout_width="80dp"
                 android:layout_height="80dp"

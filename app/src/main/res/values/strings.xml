@@ -30,5 +30,11 @@
     <string name="item_torneo_edit_button">EDITAR</string>
     <string name="item_torneo_delete_button">ELIMINAR</string>
 
+    <string name="new_tournament_dialog_input">Nombre del campeonato</string>
+    <string name="new_tournament_dialog_btn_acept">ACEPTAR</string>
+    <string name="new_tournament_dialog_btn_cancel">CANCELAR</string>
+
+
+
 
 </resources>

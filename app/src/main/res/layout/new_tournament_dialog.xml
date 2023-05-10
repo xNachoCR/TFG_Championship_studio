@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <Spinner
+        android:id="@+id/spinner_sport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_sport" />
+
+
+    <Spinner
+        android:id="@+id/spinner_n_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_n_players" />
+
+
+    <Spinner
+        android:id="@+id/spinner_format"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_format" />
+
+
+    <Spinner
+        android:id="@+id/spinner_bracket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_bracket" />
+
+
+    <EditText
+        android:id="@+id/et_tournament_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/new_tournament_dialog_input" />
+
+
+
+
+</LinearLayout>
