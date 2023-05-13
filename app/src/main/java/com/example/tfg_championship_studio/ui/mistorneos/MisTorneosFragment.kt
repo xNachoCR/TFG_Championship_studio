@@ -1,6 +1,5 @@
 package com.example.tfg_championship_studio.ui.mistorneos
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_championship_studio.R
 import com.example.tfg_championship_studio.adapter_torneos.TorneosAdapter
 import com.example.tfg_championship_studio.databinding.FragmentMisTorneosBinding
-import com.example.tfg_championship_studio.objects.ModelPlayer
 import com.example.tfg_championship_studio.objects.Torneos
-import com.example.tfg_championship_studio.objects.TournamentType
 
 class MisTorneosFragment : Fragment() {
 
     private var _binding: FragmentMisTorneosBinding? = null
-
+    private var listaTorneos = mutableListOf<Torneos>()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -38,10 +36,14 @@ class MisTorneosFragment : Fragment() {
         _binding = FragmentMisTorneosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        var listaTorneos = mutableListOf<Torneos>()
+        var manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        var decoration = DividerItemDecoration(context, manager.orientation)
+        binding.rvTorneos.layoutManager = manager
+        binding.rvTorneos.adapter = TorneosAdapter(listaTorneos)
+        binding.rvTorneos.addItemDecoration(decoration)
 
         binding.fab.setOnClickListener { initAlertDialog(listaTorneos) }
-
 
         return root
     }
@@ -84,39 +86,14 @@ class MisTorneosFragment : Fragment() {
 
 
     private fun initRecyclerView(listaTorneos: MutableList<Torneos>) {
-        var manager = LinearLayoutManager(context)
-        manager.orientation = LinearLayoutManager.VERTICAL
-        var decoration = DividerItemDecoration(context, manager.orientation)
-        binding.rvTorneos.layoutManager = manager
-        binding.rvTorneos.adapter = TorneosAdapter(listaTorneos)
-        binding.rvTorneos.addItemDecoration(decoration)
-    }
-
-    /*
-    private fun addTorneo(torneosList: MutableList<Torneos>){
-        val torneo = Torneos(
-            icon = R.drawable.google,
-            name = "Prueba",
-            nComp = 8,
-            tournament = TournamentType.LEAGUE,
-            modelPlayer = ModelPlayer.SINGLES
-        )
-
-        val torneo2 = Torneos(
-            icon = R.drawable.google,
-            name = "Hola que tal",
-            nComp = 10,
-            tournament = TournamentType.LEAGUE,
-            modelPlayer = ModelPlayer.SINGLES
-        )
-
-        torneosList.add(torneo)
-        torneosList.add(torneo2)
-
+        var listaTorneosAux = mutableListOf<Torneos>()
+        binding.rvTorneos.adapter?.notifyDataSetChanged()
+        listaTorneosAux = listaTorneos
+        binding.rvTorneos.adapter = TorneosAdapter(listaTorneosAux)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }*/
+    }
 }
