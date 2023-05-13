@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/menu"
+    android:background="@drawable/img_menu"
     tools:context=".MainActivity">
 
     <TextView
@@ -106,19 +106,19 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
-            android:src="@drawable/google"
+            android:src="@drawable/img_google"
             android:contentDescription="@string/google_desc" />
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
-            android:src="@drawable/fb"
+            android:src="@drawable/img_fb"
             android:contentDescription="@string/facebook_desc" />
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
-            android:src="@drawable/twitter"
+            android:src="@drawable/img_twitter"
             android:contentDescription="@string/twitter_desc" />
     </LinearLayout>
 

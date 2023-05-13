@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_championship_studio.R
 import com.example.tfg_championship_studio.adapter_torneos.TorneosAdapter
 import com.example.tfg_championship_studio.databinding.FragmentMisTorneosBinding
@@ -61,9 +60,9 @@ class MisTorneosFragment : Fragment() {
             val sport = customView.findViewById<Spinner>(R.id.spinner_sport).selectedItem.toString()
             var icon = 0
             if (sport.toString() == "Fútbol"){
-                icon = R.drawable.futbol_ball
+                icon = R.drawable.img_futbol_ball
             } else {
-                icon = R.drawable.google
+                icon = R.drawable.img_google
             }
 
             println(name)
