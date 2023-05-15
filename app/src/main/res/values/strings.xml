@@ -30,9 +30,23 @@
     <string name="item_torneo_edit_button">EDITAR</string>
     <string name="item_torneo_delete_button">ELIMINAR</string>
 
+    <string name="item_jugador_edit_button">EDITAR</string>
+    <string name="item_jugador_delete_button">ELIMINAR</string>
+    <string name="item_jugador_name">Nombre del jugador</string>
+    <string name="item_team_name">Nombre del Equipo</string>
+    <string name="item_team_add_jugador">AÑADIR</string>
+
     <string name="new_tournament_dialog_input">Nombre del campeonato</string>
     <string name="new_tournament_dialog_btn_acept">ACEPTAR</string>
     <string name="new_tournament_dialog_btn_cancel">CANCELAR</string>
+
+    <string name="fragment_mis_torneos_descr">Botón de añadir torneo</string>
+
+    <string name="fragment_gest_participantes_descr">Botón de añadir equipo / jugador</string>
+    <string name="fragment_gest_participantes_players">JUGADORES</string>
+    <string name="fragment_gest_participantes_teams">EQUIPOS</string>
+
+    <string name="new_players_teams_dialog_input">Nombre</string>
 
 
 

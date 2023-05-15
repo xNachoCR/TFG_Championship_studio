@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_torneo"
+    android:baselineAligned="false"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="@color/teal_200">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:layout_marginStart="4dp"
+            android:hint="@string/item_team_name"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.68">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:text="@string/item_team_add_jugador"
+            android:textSize="10sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:background="@color/white"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:text="@string/item_jugador_edit_button"
+            android:textSize="10sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:background="@color/yellow"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"
+            android:text="@string/item_jugador_delete_button"
+            android:textSize="10sp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:background="@color/red"/>
+
+    </LinearLayout>
+
+</LinearLayout>
