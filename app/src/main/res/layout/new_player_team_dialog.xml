@@ -5,19 +5,20 @@
     android:orientation="vertical">
 
     <Spinner
-        android:id="@+id/spinner_sport"
+        android:id="@+id/spinner_format_player_team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/spinner_format_player_team" />
 
     <Spinner
-        android:id="@+id/spinner_n_players"
+        android:id="@+id/spinner_n_players_player_team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="false"
         android:entries="@array/spinner_n_players_player_team" />
 
     <EditText
-        android:id="@+id/et_tournament_name"
+        android:id="@+id/et_player_team_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/new_tournament_dialog_input"

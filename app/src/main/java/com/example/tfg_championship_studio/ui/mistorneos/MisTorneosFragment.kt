@@ -19,7 +19,6 @@ import com.example.tfg_championship_studio.objects.Torneos
 class MisTorneosFragment : Fragment() {
 
     private var _binding: FragmentMisTorneosBinding? = null
-    private var listaTorneos = mutableListOf<Torneos>()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -39,15 +38,15 @@ class MisTorneosFragment : Fragment() {
         manager.orientation = LinearLayoutManager.VERTICAL
         var decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvTorneos.layoutManager = manager
-        binding.rvTorneos.adapter = TorneosAdapter(listaTorneos)
+        binding.rvTorneos.adapter = TorneosAdapter(misTorneosViewModel.listaTorneos)
         binding.rvTorneos.addItemDecoration(decoration)
 
-        binding.fab.setOnClickListener { initAlertDialog(listaTorneos) }
+        binding.fab.setOnClickListener { initAlertDialog(misTorneosViewModel.listaTorneos, misTorneosViewModel) }
 
         return root
     }
 
-    private fun initAlertDialog(listaTorneos: MutableList<Torneos>) {
+    private fun initAlertDialog(listaTorneos: MutableList<Torneos>, mtvm: MisTorneosViewModel) {
         val context = requireContext()
         val inflater = LayoutInflater.from(context)
         val customView = inflater.inflate(R.layout.new_tournament_dialog, null)
@@ -65,7 +64,6 @@ class MisTorneosFragment : Fragment() {
                 icon = R.drawable.img_google
             }
 
-            println(name)
             val torneo = Torneos(
                 icon = icon,
                 name = name,

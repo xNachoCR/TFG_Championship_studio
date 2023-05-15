@@ -90,8 +90,8 @@
     // Separación entre new_tournament_dialog y new_player_team_dialog
 
     <string-array name="spinner_format_player_team" >
-        <item>Equipos</item>
-        <item>Individual</item>
+        <item>Equipo</item>
+        <item>Jugador</item>
     </string-array>
 
     <string-array name="spinner_n_players_player_team" >

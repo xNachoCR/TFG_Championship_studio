@@ -47,8 +47,8 @@
     <string name="fragment_gest_participantes_teams">EQUIPOS</string>
 
     <string name="new_players_teams_dialog_input">Nombre</string>
-
-
+    <string name="new_players_teams_dialog_btn_acept">ACEPTAR</string>
+    <string name="new_players_teams_dialog_btn_cancel">CANCELAR</string>
 
 
 </resources>
