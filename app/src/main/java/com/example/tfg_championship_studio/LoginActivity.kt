@@ -8,7 +8,9 @@ import com.example.tfg_championship_studio.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -20,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginUser() {
+        SignUpActivity.GlobalData.emailKey = binding.email.text.toString()
         if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()){
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                 binding.email.text.toString(), binding.password.text.toString()

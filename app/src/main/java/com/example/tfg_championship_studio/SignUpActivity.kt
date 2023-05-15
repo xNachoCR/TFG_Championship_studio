@@ -6,9 +6,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_championship_studio.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
+    private val db = FirebaseFirestore.getInstance()
+    private val userCollection = db.collection("users")
+    object GlobalData{
+        var emailKey = ""
+    }
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
@@ -25,8 +31,13 @@ class SignUpActivity: AppCompatActivity() {
                 FirebaseAuth.getInstance()
                     .createUserWithEmailAndPassword(binding.email.text.toString(),
                         binding.password.text.toString()).addOnCompleteListener {
-
                         if(it.isSuccessful){
+                            GlobalData.emailKey = binding.email.text.toString()
+                            val userDocument = userCollection.document(GlobalData.emailKey)
+                            val userData = hashMapOf(
+                                "nTorneos" to 0,
+                            )
+                            userDocument.set(userData)
                             showLogin()
                         } else{
                             showAlert()
