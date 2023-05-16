@@ -23,7 +23,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() {
         SignUpActivity.GlobalData.emailKey = binding.email.text.toString()
-        if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()){
+        val empty = checkEmpty()
+        if (empty){
             FirebaseAuth.getInstance().signInWithEmailAndPassword(
                 binding.email.text.toString(), binding.password.text.toString()
             ).addOnCompleteListener {
@@ -33,13 +34,31 @@ class LoginActivity : AppCompatActivity() {
                     showAlert()
                 }
             }
+        }else {
+            showAlertEmpty()
         }
+    }
+
+    private fun checkEmpty(): Boolean {
+        if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()){
+            return true
+        }
+        return false
     }
 
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage("Error al autenticar usuario")
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showAlertEmpty() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Error")
+        builder.setMessage("Error, no puedes dejar un campo vacío")
         builder.setPositiveButton("Aceptar", null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
