@@ -25,10 +25,13 @@
     <string name="txt_below_login">login with</string>
     <string name="txt_below_sign_up">or sign up with</string>
 
-    <string name="item_torneo_nparticipantes">Nº Participantes:</string>
+    <string name="item_torneo_state">Estado:</string>
     <string name="item_torneo_icon_desc">Tournament Type Icon</string>
     <string name="item_torneo_edit_button">GESTIONAR</string>
     <string name="item_torneo_delete_button">ELIMINAR</string>
+    <string name="item_torneo_config_button">CONFIGURAR</string>
+
+
 
     <string name="item_jugador_edit_button">EDITAR</string>
     <string name="item_jugador_delete_button">ELIMINAR</string>
@@ -37,6 +40,7 @@
     <string name="item_team_add_jugador">AÑADIR</string>
 
     <string name="new_tournament_dialog_input">Nombre del campeonato</string>
+    <string name="new_tournament_dialog_title">CREAR NUEVO TORNEO</string>
     <string name="new_tournament_dialog_btn_acept">ACEPTAR</string>
     <string name="new_tournament_dialog_btn_cancel">CANCELAR</string>
 

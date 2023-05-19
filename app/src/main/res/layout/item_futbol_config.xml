@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <Spinner
+        android:id="@+id/spinner_n_players"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:entries="@array/spinner_n_players"
+        android:spinnerStyle="@style/SpinnerTextStyle"/>
+
+    <Spinner
+        android:id="@+id/spinner_format"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:entries="@array/spinner_bracket"
+        android:spinnerStyle="@style/SpinnerTextStyle"/>
+
+
+
+</LinearLayout>

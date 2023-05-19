@@ -13,9 +13,9 @@ class TorneosViewHolder (val view: View): RecyclerView.ViewHolder(view){
     fun render(torneoModel: Torneos){
 
         binding.itemName.text = torneoModel.name
-        binding.itemNPlayers.text = binding.itemNPlayers.text.toString() + " " + torneoModel.nComp.toString()
-        binding.itemFormat.text = torneoModel.tournament.toString()
-        binding.itemModelPlayer.text = torneoModel.modelPlayer.toString()
+//        binding.itemNPlayers.text = binding.itemNPlayers.text.toString() + " " + torneoModel.nComp.toString()
+//        binding.itemFormat.text = torneoModel.tournament.toString()
+//        binding.itemModelPlayer.text = torneoModel.modelPlayer.toString()
         Glide.with(binding.itemSport.context).load(torneoModel.icon).into(binding.itemSport)
 
     }

@@ -1,5 +1,6 @@
 package com.example.tfg_championship_studio.ui.mistorneos
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,51 +30,60 @@ class MisTorneosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val misTorneosViewModel =
-            ViewModelProvider(this).get(MisTorneosViewModel::class.java)
+            ViewModelProvider(this)[MisTorneosViewModel::class.java]
 
         _binding = FragmentMisTorneosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        var manager = LinearLayoutManager(context)
+        val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
-        var decoration = DividerItemDecoration(context, manager.orientation)
+        val decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvTorneos.layoutManager = manager
         binding.rvTorneos.adapter = TorneosAdapter(misTorneosViewModel.listaTorneos)
         binding.rvTorneos.addItemDecoration(decoration)
 
-        binding.fab.setOnClickListener { initAlertDialog(misTorneosViewModel.listaTorneos, misTorneosViewModel) }
+        binding.fab.setOnClickListener { initAlertDialog(misTorneosViewModel.listaTorneos) }
 
         return root
     }
 
-    private fun initAlertDialog(listaTorneos: MutableList<Torneos>, mtvm: MisTorneosViewModel) {
+    private fun initAlertDialog(listaTorneos: MutableList<Torneos>) {
         val context = requireContext()
         val inflater = LayoutInflater.from(context)
         val customView = inflater.inflate(R.layout.new_tournament_dialog, null)
 
-        val builder = AlertDialog.Builder(context).setView(customView).setPositiveButton(R.string.new_tournament_dialog_btn_acept) { dialog, which ->
-            val nPlayers = customView.findViewById<Spinner>(R.id.spinner_n_players).selectedItem.toString().toInt()
-            val modelPlayer = customView.findViewById<Spinner>(R.id.spinner_format).selectedItem.toString()
-            val tournament = customView.findViewById<Spinner>(R.id.spinner_bracket).selectedItem.toString()
+        val builder = AlertDialog.Builder(context).setView(customView).setPositiveButton(R.string.new_tournament_dialog_btn_acept) { _, _ ->
+//            val nPlayers = customView.findViewById<Spinner>(R.id.spinner_n_players).selectedItem.toString().toInt()
+//            val modelPlayer = customView.findViewById<Spinner>(R.id.spinner_format).selectedItem.toString()
+//            val tournament = customView.findViewById<Spinner>(R.id.spinner_bracket).selectedItem.toString()
             val name = customView.findViewById<EditText>(R.id.et_tournament_name).text.toString()
             val sport = customView.findViewById<Spinner>(R.id.spinner_sport).selectedItem.toString()
             var icon = 0
-            if (sport.toString() == "Fútbol"){
-                icon = R.drawable.img_futbol_ball
-            } else {
-                icon = R.drawable.img_google
+            when(sport){
+                "Fútbol" -> {
+                    icon = R.drawable.img_futbol_ball
+                }
+                "Tenis" -> {
+                    icon = R.drawable.img_tenis
+                }
+                "Baloncesto" -> {
+                    icon = R.drawable.img_basketball
+                }
+                "Motorsport" -> {
+                    icon = R.drawable.img_motorsport
+                }
             }
 
             val torneo = Torneos(
                 icon = icon,
                 name = name,
-                nComp = nPlayers,
-                tournament = tournament,
-                modelPlayer = modelPlayer
+//                nComp = nPlayers,
+//                tournament = tournament,
+//                modelPlayer = modelPlayer
             )
             listaTorneos.add(torneo)
             initRecyclerView(listaTorneos)
-        }.setNegativeButton(R.string.new_tournament_dialog_btn_cancel) { dialog, which ->
+        }.setNegativeButton(R.string.new_tournament_dialog_btn_cancel) { _, _ ->
             //Lógica del botón
         }
 
@@ -82,10 +92,10 @@ class MisTorneosFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerView(listaTorneos: MutableList<Torneos>) {
-        var listaTorneosAux = mutableListOf<Torneos>()
         binding.rvTorneos.adapter?.notifyDataSetChanged()
-        listaTorneosAux = listaTorneos
+        val listaTorneosAux: MutableList<Torneos> = listaTorneos
         binding.rvTorneos.adapter = TorneosAdapter(listaTorneosAux)
     }
 
