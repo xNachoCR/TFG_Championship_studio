@@ -39,7 +39,7 @@ class MisTorneosFragment : Fragment() {
         manager.orientation = LinearLayoutManager.VERTICAL
         val decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvTorneos.layoutManager = manager
-        binding.rvTorneos.adapter = TorneosAdapter(misTorneosViewModel.listaTorneos)
+        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it, misTorneosViewModel.listaTorneos) }
         binding.rvTorneos.addItemDecoration(decoration)
 
         binding.fab.setOnClickListener { initAlertDialog(misTorneosViewModel.listaTorneos) }
@@ -96,7 +96,7 @@ class MisTorneosFragment : Fragment() {
     private fun initRecyclerView(listaTorneos: MutableList<Torneos>) {
         binding.rvTorneos.adapter?.notifyDataSetChanged()
         val listaTorneosAux: MutableList<Torneos> = listaTorneos
-        binding.rvTorneos.adapter = TorneosAdapter(listaTorneosAux)
+        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it, listaTorneosAux) }
     }
 
     override fun onDestroyView() {

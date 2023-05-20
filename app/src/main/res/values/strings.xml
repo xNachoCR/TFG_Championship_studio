@@ -32,7 +32,6 @@
     <string name="item_torneo_config_button">CONFIGURAR</string>
 
 
-
     <string name="item_jugador_edit_button">EDITAR</string>
     <string name="item_jugador_delete_button">ELIMINAR</string>
     <string name="item_jugador_name">Nombre del jugador</string>
@@ -53,6 +52,8 @@
     <string name="new_players_teams_dialog_input">Nombre</string>
     <string name="new_players_teams_dialog_btn_acept">ACEPTAR</string>
     <string name="new_players_teams_dialog_btn_cancel">CANCELAR</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

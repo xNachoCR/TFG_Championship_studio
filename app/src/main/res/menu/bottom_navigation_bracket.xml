@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="EQUIPOS"
+        android:icon="@drawable/img_person"
+        android:id="@+id/menu_teams"/>
+    <item
+        android:title="BRACKET"
+        android:icon="@drawable/img_bracket"
+        android:id="@+id/menu_bracket"/>
+
+</menu>
