@@ -3,8 +3,8 @@ package com.example.tfg_championship_studio
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.tfg_championship_studio.databinding.ActivityMainBnvBinding
-import com.example.tfg_championship_studio.objects.Equipos
 
 
 class BottomMainActivity: AppCompatActivity() {
@@ -19,18 +19,17 @@ class BottomMainActivity: AppCompatActivity() {
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.menu_teams -> replaceFragment(Equipos())
-                R.id.menu_bracket -> replaceFragment(Bracket())
-                else ->{
-
+                R.id.menu_teams ->{
+                    replaceFragment(Equipos())
+                    true
                 }
+                R.id.menu_bracket ->{
+                    replaceFragment(Bracket())
+                    true
+                }
+                else -> false
             }
-
-            true
         }
-
-
-
     }
 
     private fun replaceFragment(fragment: Fragment){

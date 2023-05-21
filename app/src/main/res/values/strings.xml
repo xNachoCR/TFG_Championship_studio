@@ -52,8 +52,17 @@
     <string name="new_players_teams_dialog_input">Nombre</string>
     <string name="new_players_teams_dialog_btn_acept">ACEPTAR</string>
     <string name="new_players_teams_dialog_btn_cancel">CANCELAR</string>
+
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragment_equipos_message">Participantes restantes por añadir:</string>
+    <string name="fragment_equipos_btn_añadir_participante">AÑADIR PARTICIPANTE</string>
+    <string name="fragment_equipos_btn_generar_partidos">GENERAR PARTIDOS</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_dialog_new_participante">Escribe el nombre del participante</string>
+
+    <string name="item_bracket_btn_win">GANADOR</string>
+
+
 
 
 </resources>

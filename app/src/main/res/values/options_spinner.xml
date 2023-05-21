@@ -8,7 +8,6 @@
     </string-array>
 
     <string-array name="spinner_n_players" >
-        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
@@ -117,5 +116,56 @@
         <item>20</item>
         <item>21</item>
         <item>22</item>
+    </string-array>
+
+    // Usado para generar las rondas en el bracket
+
+    <string-array name="bracket_final" >
+        <item>Final</item>
+    </string-array>
+
+    <string-array name="bracket_semifinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+    </string-array>
+
+    <string-array name="bracket_cuartosfinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+        <item>Cuartos de Final</item>
+    </string-array>
+
+    <string-array name="bracket_octavosfinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+        <item>Cuartos de Final</item>
+        <item>Octavos de Final</item>
+    </string-array>
+
+    <string-array name="bracket_dieciseisfinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+        <item>Cuartos de Final</item>
+        <item>Octavos de Final</item>
+        <item>Dieciseisavos de Final</item>
+    </string-array>
+
+    <string-array name="bracket_treintaydosfinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+        <item>Cuartos de Final</item>
+        <item>Octavos de Final</item>
+        <item>Dieciseisavos de Final</item>
+        <item>Treintaidosavos de Final</item>
+    </string-array>
+
+    <string-array name="bracket_sesentaycuatrofinal" >
+        <item>Final</item>
+        <item>Semifinal</item>
+        <item>Cuartos de Final</item>
+        <item>Octavos de Final</item>
+        <item>Dieciseisavos de Final</item>
+        <item>Treintaidosavos de Final</item>
+        <item>Sesentaicuatroavos de Final</item>
     </string-array>
 </resources>

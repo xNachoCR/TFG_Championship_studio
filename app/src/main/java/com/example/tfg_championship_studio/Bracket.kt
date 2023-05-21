@@ -5,6 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tfg_championship_studio.adapter_bracket.BracketAdapter
+import com.example.tfg_championship_studio.adapter_players_teams.PlayersAdapter
+import com.example.tfg_championship_studio.databinding.FragmentBracketBinding
+import com.example.tfg_championship_studio.databinding.FragmentEquiposBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +26,7 @@ class Bracket : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: FragmentBracketBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +40,16 @@ class Bracket : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentBracketBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bracket, container, false)
+        var manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        var decoration = DividerItemDecoration(context, manager.orientation)
+        binding.rvBracket.layoutManager = manager
+        binding.rvBracket.adapter = BracketAdapter(bracket.enfrentamientos)
+        binding.rvBracket.addItemDecoration(decoration)
+
+        return binding.root
     }
 
     companion object {

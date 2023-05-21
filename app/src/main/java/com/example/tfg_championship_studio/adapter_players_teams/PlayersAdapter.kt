@@ -16,12 +16,13 @@ class PlayersAdapter(private val playersList: MutableList<Jugadores>): RecyclerV
     override fun onBindViewHolder(holder: PlayersViewHolder, position: Int) {
         val item = playersList[position]
         holder.render(item)
+        /*
         holder.binding.tvDelete.setOnClickListener {
             playersList.removeAt(position)
             println(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, playersList.size)
-        }
+        }*/
     }
 
     override fun getItemCount(): Int {

@@ -35,9 +35,10 @@ class GestParticipantesFragment : Fragment() {
         val gestParticipantesViewModel =
             ViewModelProvider(this).get(GestParticipantesViewModel::class.java)
 
+
         _binding = FragmentGestParticipantesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        /*
         var managerP = LinearLayoutManager(context)
         var managerT = LinearLayoutManager(context)
         managerP.orientation = LinearLayoutManager.VERTICAL
@@ -50,8 +51,8 @@ class GestParticipantesFragment : Fragment() {
         binding.rvTeams.adapter = TeamsAdapter(gestParticipantesViewModel.teamList)
         binding.rvPlayers.addItemDecoration(decorationP)
         binding.rvTeams.addItemDecoration(decorationT)
-
-        binding.fab.setOnClickListener { initAlertDialog(gestParticipantesViewModel.playerList, gestParticipantesViewModel.teamList, gestParticipantesViewModel) }
+        */
+        //binding.fab.setOnClickListener { initAlertDialog(gestParticipantesViewModel.playerList, gestParticipantesViewModel.teamList, gestParticipantesViewModel) }
 
         return root
     }
