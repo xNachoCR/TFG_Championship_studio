@@ -7,7 +7,7 @@ import com.example.tfg_championship_studio.objects.Torneos
 
 class MisTorneosViewModel : ViewModel() {
 
-    val listaTorneos = mutableListOf<Torneos>()
+    var listaTorneos = mutableListOf<Torneos>()
 
     private val _text = MutableLiveData<String>().apply {
         value = "Esta es la ventana de gestión de tus torneos"

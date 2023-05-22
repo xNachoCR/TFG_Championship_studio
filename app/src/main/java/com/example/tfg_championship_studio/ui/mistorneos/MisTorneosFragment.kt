@@ -13,9 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg_championship_studio.R
+import com.example.tfg_championship_studio.SignUpActivity
 import com.example.tfg_championship_studio.adapter_torneos.TorneosAdapter
 import com.example.tfg_championship_studio.databinding.FragmentMisTorneosBinding
 import com.example.tfg_championship_studio.objects.Torneos
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MisTorneosFragment : Fragment() {
 
@@ -23,6 +25,12 @@ class MisTorneosFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var tId = 0
+    var listaTorneos = mutableListOf<Torneos>()
+    val listaAux = mutableListOf<Torneos>()
+    val db = FirebaseFirestore.getInstance()
+    val collectionRef = db.collection("users")
+    val documentId = SignUpActivity.GlobalData.emailKey
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,14 +43,48 @@ class MisTorneosFragment : Fragment() {
         _binding = FragmentMisTorneosBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        listaTorneos = listaAux
+
+        collectionRef.document(documentId)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val torneoData = documentSnapshot.data
+                    val torneoValue = torneoData?.get("Torneo")
+
+                    if (torneoValue is Map<*, *>) {
+                        val fieldNames = torneoValue.keys
+
+                        for (fieldName in fieldNames) {
+                            val fieldValue = torneoValue[fieldName]
+                            val torneo = Torneos(
+                                icon = R.drawable.img_futbol_ball,
+                                name = fieldName.toString()
+                            )
+                            listaTorneos.add(torneo)
+                            println("Campo: $fieldName")
+                            println("Valor: $fieldValue")
+                        }
+
+                    } else {
+                        println("El campo Torneo no existe en el documento o no es un objeto Map.")
+                    }
+                } else {
+                    println("El documento no existe.")
+                }
+            }
+            .addOnFailureListener { e ->
+                println("Error al leer el documento: $e")
+            }
+
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
         val decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvTorneos.layoutManager = manager
-        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it, misTorneosViewModel.listaTorneos) }
+        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it,listaTorneos) }
         binding.rvTorneos.addItemDecoration(decoration)
 
-        binding.fab.setOnClickListener { initAlertDialog(misTorneosViewModel.listaTorneos) }
+        binding.fab.setOnClickListener { initAlertDialog(listaTorneos) }
 
         return root
     }
@@ -57,6 +99,10 @@ class MisTorneosFragment : Fragment() {
 //            val modelPlayer = customView.findViewById<Spinner>(R.id.spinner_format).selectedItem.toString()
 //            val tournament = customView.findViewById<Spinner>(R.id.spinner_bracket).selectedItem.toString()
             val name = customView.findViewById<EditText>(R.id.et_tournament_name).text.toString()
+            if(name == "Nombre del campeonato" || name.startsWith(".") || name.endsWith(".") || name.contains("..") || checkName(listaTorneos, name) || name.isEmpty()){
+                showAlert()
+                return@setPositiveButton
+            }
             val sport = customView.findViewById<Spinner>(R.id.spinner_sport).selectedItem.toString()
             var icon = 0
             when(sport){
@@ -77,12 +123,16 @@ class MisTorneosFragment : Fragment() {
             val torneo = Torneos(
                 icon = icon,
                 name = name,
-//                nComp = nPlayers,
-//                tournament = tournament,
-//                modelPlayer = modelPlayer
             )
             listaTorneos.add(torneo)
-            initRecyclerView(listaTorneos)
+            initRecyclerView()
+            tId++
+            val documentRef = db.collection("users").document(SignUpActivity.GlobalData.emailKey)
+            val newTorneoData = hashMapOf(
+                "id" to tId,
+                "nParticipantes" to 0
+            )
+            documentRef.update("Torneo." + name, newTorneoData)
         }.setNegativeButton(R.string.new_tournament_dialog_btn_cancel) { _, _ ->
             //Lógica del botón
         }
@@ -91,12 +141,28 @@ class MisTorneosFragment : Fragment() {
         dialog.show()
     }
 
+    private fun checkName(listaTorneos: MutableList<Torneos>, name: String): Boolean {
+        for (torneo in listaTorneos) {
+            if (torneo.name == name){
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun showAlert() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
+        builder.setMessage("El nombre introducido no es válido")
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun initRecyclerView(listaTorneos: MutableList<Torneos>) {
+    private fun initRecyclerView() {
         binding.rvTorneos.adapter?.notifyDataSetChanged()
-        val listaTorneosAux: MutableList<Torneos> = listaTorneos
-        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it, listaTorneosAux) }
     }
 
     override fun onDestroyView() {

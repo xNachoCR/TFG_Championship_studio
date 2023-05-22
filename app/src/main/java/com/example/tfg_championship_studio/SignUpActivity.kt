@@ -39,11 +39,12 @@ class SignUpActivity: AppCompatActivity() {
         }else if (empty && length && password){
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
             GlobalData.emailKey = binding.email.text.toString()
-            val userDocument = userCollection.document(GlobalData.emailKey)
-            val userData = hashMapOf(
-                "nTorneos" to 0,
-            )
-            userDocument.set(userData)
+            val emptyMap = mapOf<String, Any>()
+
+            val data = hashMapOf<String, Any>()
+            data["Torneo"] = emptyMap
+
+            userCollection.document(GlobalData.emailKey).set(data)
             showLogin()
         }else {
             showAlert()
