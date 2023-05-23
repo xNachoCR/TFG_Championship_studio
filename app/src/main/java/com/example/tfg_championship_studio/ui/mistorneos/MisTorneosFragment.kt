@@ -57,13 +57,21 @@ class MisTorneosFragment : Fragment() {
 
                         for (fieldName in fieldNames) {
                             val fieldValue = torneoValue[fieldName]
-                            val torneo = Torneos(
-                                icon = R.drawable.img_futbol_ball,
-                                name = fieldName.toString()
-                            )
-                            listaTorneos.add(torneo)
                             println("Campo: $fieldName")
                             println("Valor: $fieldValue")
+                            if (fieldValue is Map<*, *>){
+                                val id = fieldValue["id"]
+                                val estado = fieldValue["estado"]
+                                tId = id.toString().toInt()
+                                println("Id: $id")
+                                val torneo = Torneos(
+                                    icon = R.drawable.img_futbol_ball,
+                                    name = fieldName.toString(),
+                                    id = id.toString().toInt(),
+                                    estado = estado as Boolean
+                                )
+                                listaTorneos.add(torneo)
+                            }
                         }
 
                     } else {
@@ -119,18 +127,21 @@ class MisTorneosFragment : Fragment() {
                     icon = R.drawable.img_motorsport
                 }
             }
-
+            tId++
             val torneo = Torneos(
                 icon = icon,
                 name = name,
+                id = tId,
+                estado = false
             )
             listaTorneos.add(torneo)
             initRecyclerView()
-            tId++
             val documentRef = db.collection("users").document(SignUpActivity.GlobalData.emailKey)
             val newTorneoData = hashMapOf(
                 "id" to tId,
-                "nParticipantes" to 0
+                "nParticipantes" to 0,
+                "estado" to false,
+                "Participante" to emptyMap<String, Any>()
             )
             documentRef.update("Torneo." + name, newTorneoData)
         }.setNegativeButton(R.string.new_tournament_dialog_btn_cancel) { _, _ ->
@@ -170,3 +181,4 @@ class MisTorneosFragment : Fragment() {
         _binding = null
     }
 }
+
