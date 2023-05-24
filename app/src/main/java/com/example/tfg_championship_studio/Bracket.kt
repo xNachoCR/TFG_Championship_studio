@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg_championship_studio.adapter_bracket.BracketAdapter
-import com.example.tfg_championship_studio.adapter_players_teams.PlayersAdapter
 import com.example.tfg_championship_studio.databinding.FragmentBracketBinding
-import com.example.tfg_championship_studio.databinding.FragmentEquiposBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +44,7 @@ class Bracket : Fragment() {
         manager.orientation = LinearLayoutManager.VERTICAL
         var decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvBracket.layoutManager = manager
-        binding.rvBracket.adapter = BracketAdapter(bracket.enfrentamientos)
+        binding.rvBracket.adapter = BracketAdapter(cuadro.enfrentamientos)
         binding.rvBracket.addItemDecoration(decoration)
 
         return binding.root
