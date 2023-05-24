@@ -40,14 +40,28 @@ class Bracket : Fragment() {
     ): View? {
         binding = FragmentBracketBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
+
+        initBracket()
+
         var manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
         var decoration = DividerItemDecoration(context, manager.orientation)
         binding.rvBracket.layoutManager = manager
-        binding.rvBracket.adapter = BracketAdapter(cuadro.enfrentamientos)
+        binding.rvBracket.adapter = BracketAdapter(GlobalData.emparejamientos)
         binding.rvBracket.addItemDecoration(decoration)
 
         return binding.root
+    }
+
+    private fun initBracket(){
+        val empty = mutableListOf<Pair<String, String>>()
+        var manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        var decoration = DividerItemDecoration(context, manager.orientation)
+        binding.rvBracket.layoutManager = manager
+        binding.rvBracket.addItemDecoration(decoration)
+        binding.rvBracket.adapter = BracketAdapter(empty)
+
     }
 
     companion object {

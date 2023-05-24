@@ -1,33 +1,27 @@
 package com.example.tfg_championship_studio
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg_championship_studio.adapter_players_teams.PlayersAdapter
 import com.example.tfg_championship_studio.adapter_torneos.TorneosAdapter
 import com.example.tfg_championship_studio.databinding.FragmentEquiposBinding
 import com.example.tfg_championship_studio.objects.Jugadores
-import com.example.tfg_championship_studio.objects.Torneos
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.logging.Handler
 
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-object cuadro{
-    var enfrentamientos = mutableListOf<Pair<Jugadores, Jugadores>>()
+object GlobalData{
+    var emparejamientos = mutableListOf<Pair<String, String>>()
 }
 
 class Equipos : Fragment() {
@@ -59,7 +53,6 @@ class Equipos : Fragment() {
         getParticipantes()
         get_nPlayers()
 
-
         binding.tvAddParticipantes.setOnClickListener { addParticipante(participantesList) }
         binding.tvGenPartidos.setOnClickListener { generarBracket(participantesList) }
 
@@ -68,22 +61,42 @@ class Equipos : Fragment() {
 
 
 
-    private fun generarBracket(pList: MutableList<Jugadores>): MutableList<Pair<Jugadores, Jugadores>> {
-        val jugadoresAleatorios = pList.shuffled()
-        val bracket = Bracket()
+    private fun generarBracket(pList: MutableList<Jugadores>) {
+        val jugadoresAleatorios: MutableList<Jugadores> = pList.shuffled() as MutableList<Jugadores>
+        var enfrentamientos = mutableListOf<Pair<String, String>>()
 
-        for (i in 0 until jugadoresAleatorios.size / 2) {
-            val jugador1 = jugadoresAleatorios[i * 2]
-            val jugador2 = jugadoresAleatorios[i * 2 + 1]
-            cuadro.enfrentamientos.add(jugador1 to jugador2)
+        when (nPlayers) {
+            2 -> {
+                enfrentamientos.add(jugadoresAleatorios[0].name to jugadoresAleatorios[1].name)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
+            in 3..4 -> {
+                enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
+            in 5..8 -> {
+                enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
+            in 9..16 -> {
+                enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
+            in 17..32 -> {
+                enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
+            else -> {
+                enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
+                GlobalData.emparejamientos = enfrentamientos
+                cambiaEuiposFragment()
+            }
         }
-
-        binding.tvAddParticipantes.visibility = View.GONE
-        binding.tvGenPartidos.visibility = View.GONE
-        binding.tvParticipantes.text = "PARTICIPANTES DEL TORNEO"
-        showLongSnackbar(binding.root)
-
-        return cuadro.enfrentamientos
     }
 
     private fun addParticipante(pList: MutableList<Jugadores>) {
@@ -92,6 +105,12 @@ class Equipos : Fragment() {
         val customView = inflater.inflate(R.layout.dialog_new_participante, null)
         val builder = AlertDialog.Builder(context).setView(customView).setPositiveButton(R.string.new_players_teams_dialog_btn_acept) { _, _ ->
             val name = customView.findViewById<EditText>(R.id.et_name_participante).text.toString()
+            for (i in pList){
+                if (name == i.name){
+                    showAlert()
+                    return@setPositiveButton
+                }
+            }
             val participante = Jugadores(name = name)
             nPlayers -= 1
             if (nPlayers == 0) {
@@ -108,10 +127,6 @@ class Equipos : Fragment() {
 
         val dialog = builder.create()
         dialog.show()
-    }
-
-    private fun saveParticipante(name: String) {
-
     }
 
     private fun initRecyclerView(pList: MutableList<Jugadores>) {
@@ -159,6 +174,8 @@ class Equipos : Fragment() {
                         if (nPlayers == participantesList.size && nPlayers != 0){
                             binding.tvAddParticipantes.visibility = View.GONE
                             binding.tvGenPartidos.visibility = View.VISIBLE
+                        } else if (nPlayers != participantesList.size && participantesList.size != 0){
+                            nPlayers -= participantesList.size
                         }
 
                         val manager = LinearLayoutManager(context)
@@ -182,7 +199,91 @@ class Equipos : Fragment() {
             println("Error al obtener el documento: $e")
         }
     }
+
+    private fun saveParticipante(name: String) {
+        documentRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val torneoData = documentSnapshot.data
+                    val torneo = torneoData?.get("Torneo") as? Map<String, Any>
+                    val championsData = torneo?.get(TorneosAdapter.GlobalData.nameKey) as? Map<String, Any>
+                    val participanteData = championsData?.get("Participante") as? Map<String, Any>
+
+                    if (participanteData != null) {
+                        // Verificar si ya existe un mapa vacío en "Participante"
+                        if (!participanteData.containsKey(name)) {
+                            // Agregar el nuevo mapa vacío al campo "Participante"
+                            val newData = hashMapOf<String, Any>()
+                            newData.putAll(participanteData)
+                            newData[name] = hashMapOf<String, Any>()
+
+                            documentRef.update("Torneo." + TorneosAdapter.GlobalData.nameKey + ".Participante", newData)
+                                .addOnSuccessListener {
+                                    // Actualización exitosa
+                                    println("Nuevo mapa vacío agregado a 'Participante' correctamente.")
+                                }
+                                .addOnFailureListener { e ->
+                                    // Error al realizar la actualización
+                                    println("Error al agregar el nuevo mapa vacío a 'Participante': $e")
+                                }
+                        } else {
+                            // El mapa vacío ya existe en "Participante"
+                            showAlert()
+                            println("El mapa vacío 'NuevoParticipante' ya existe en 'Participante'.")
+                        }
+                    } else {
+                        // El campo "Participante" no es un mapa
+                        println("El campo 'Participante' no es un mapa.")
+                    }
+                } else {
+                    // El documento no existe
+                    println("El documento no existe.")
+                }
+            }
+            .addOnFailureListener { e ->
+                // Error al obtener el documento
+                println("Error al obtener el documento: $e")
+            }
+    }
     fun showLongSnackbar(view: View) {
         val snackbar = Snackbar.make(view, "Se han generado los partidos en la pestaña bracket", Snackbar.LENGTH_LONG).show()
     }
+
+    private fun showAlert() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
+        builder.setMessage("Ya existe un aprticipante con ese nombre")
+        builder.setPositiveButton("Aceptar", null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun emparejarParticipantes(pList: MutableList<Jugadores>): MutableList<Pair<String, String>>{
+        var enfrentamientos = mutableListOf<Pair<String, String>>()
+
+        if (nPlayers % 2 == 0) {
+            // Enfrentar a los jugadores de dos en dos
+            for (i in 0 until nPlayers step 2) {
+                enfrentamientos.add(pList[i].name to pList[i + 1].name)
+            }
+
+            return enfrentamientos
+        } else {
+            for (i in 0 until (nPlayers - 2) step 2) {
+                enfrentamientos.add(pList[i].name to pList[i + 1].name)
+            }
+            // Enfrentar al jugador sobrante contra "bye"
+            val jugadorSobrante = pList.last()
+            enfrentamientos.add(jugadorSobrante.name to "bye")
+            return enfrentamientos
+        }
+    }
+
+    private fun cambiaEuiposFragment() {
+        binding.tvAddParticipantes.visibility = View.GONE
+        binding.tvGenPartidos.visibility = View.GONE
+        binding.tvParticipantes.text = "PARTICIPANTES DEL TORNEO"
+        showLongSnackbar(binding.root)
+    }
+
 }

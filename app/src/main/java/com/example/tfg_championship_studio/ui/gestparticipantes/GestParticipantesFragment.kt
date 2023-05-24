@@ -9,14 +9,11 @@ import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tfg_championship_studio.R
 import com.example.tfg_championship_studio.R.*
 import com.example.tfg_championship_studio.adapter_players_teams.PlayersAdapter
 import com.example.tfg_championship_studio.adapter_players_teams.TeamsAdapter
 import com.example.tfg_championship_studio.databinding.FragmentGestParticipantesBinding
-import com.example.tfg_championship_studio.objects.Equipos
 import com.example.tfg_championship_studio.objects.Jugadores
 
 
@@ -57,7 +54,7 @@ class GestParticipantesFragment : Fragment() {
         return root
     }
 
-    private fun initAlertDialog(listaJugadores: MutableList<Jugadores>, listaEquipos: MutableList<Equipos>, gpvm: GestParticipantesViewModel) {
+    private fun initAlertDialog(listaJugadores: MutableList<Jugadores>, gpvm: GestParticipantesViewModel) {
         val context = requireContext()
         val inflater = LayoutInflater.from(context)
         val customView = inflater.inflate(layout.new_player_team_dialog, null)
@@ -73,12 +70,7 @@ class GestParticipantesFragment : Fragment() {
             val name = customView.findViewById<EditText>(R.id.et_player_team_name).text.toString()
 
             if (flag == 1){
-                val team = Equipos(
-                    name = name,
-                    nPlayers = nPlayers
-                )
-                gpvm.teamList.add(team)
-                initRecyclerViewT(listaEquipos)
+
             } else{
                 val player = Jugadores(
                     name = name
@@ -94,12 +86,13 @@ class GestParticipantesFragment : Fragment() {
         dialog.show()
     }
 
+    /*
     private fun initRecyclerViewT(lista: MutableList<Equipos>) {
         var listaAux = mutableListOf<Equipos>()
         binding.rvTeams.adapter?.notifyDataSetChanged()
         listaAux = lista
         binding.rvTeams.adapter = TeamsAdapter(listaAux)
-    }
+    }*/
 
     private fun initRecyclerViewP(lista: MutableList<Jugadores>) {
         var listaAux = mutableListOf<Jugadores>()
