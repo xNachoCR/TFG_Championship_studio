@@ -45,52 +45,7 @@ class MisTorneosFragment : Fragment() {
 
         listaTorneos = listaAux
 
-        collectionRef.document(documentId)
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    val torneoData = documentSnapshot.data
-                    val torneoValue = torneoData?.get("Torneo")
-
-                    if (torneoValue is Map<*, *>) {
-                        val fieldNames = torneoValue.keys
-
-                        for (fieldName in fieldNames) {
-                            val fieldValue = torneoValue[fieldName]
-                            println("Campo: $fieldName")
-                            println("Valor: $fieldValue")
-                            if (fieldValue is Map<*, *>){
-                                val id = fieldValue["id"]
-                                val estado = fieldValue["estado"]
-                                tId = id.toString().toInt()
-                                println("Id: $id")
-                                val torneo = Torneos(
-                                    icon = R.drawable.img_futbol_ball,
-                                    name = fieldName.toString(),
-                                    id = id.toString().toInt(),
-                                    estado = estado as Boolean
-                                )
-                                listaTorneos.add(torneo)
-                            }
-                        }
-
-                    } else {
-                        println("El campo Torneo no existe en el documento o no es un objeto Map.")
-                    }
-                } else {
-                    println("El documento no existe.")
-                }
-            }
-            .addOnFailureListener { e ->
-                println("Error al leer el documento: $e")
-            }
-
-        val manager = LinearLayoutManager(context)
-        manager.orientation = LinearLayoutManager.VERTICAL
-        val decoration = DividerItemDecoration(context, manager.orientation)
-        binding.rvTorneos.layoutManager = manager
-        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it,listaTorneos) }
-        binding.rvTorneos.addItemDecoration(decoration)
+        cargaDatos()
 
         binding.fab.setOnClickListener { initAlertDialog(listaTorneos) }
 
@@ -174,6 +129,54 @@ class MisTorneosFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initRecyclerView() {
         binding.rvTorneos.adapter?.notifyDataSetChanged()
+    }
+
+    private fun cargaDatos(){
+        collectionRef.document(documentId)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val torneoData = documentSnapshot.data
+                    val torneoValue = torneoData?.get("Torneo")
+                    if (torneoValue is Map<*, *>) {
+                        val fieldNames = torneoValue.keys
+                        for (fieldName in fieldNames) {
+                            val fieldValue = torneoValue[fieldName]
+                            if (fieldValue is Map<*, *>){
+                                val id = fieldValue["id"]
+                                val estado = fieldValue["estado"]
+                                tId = id.toString().toInt()
+                                println("Id: $id")
+                                val torneo = Torneos(
+                                    icon = R.drawable.img_futbol_ball,
+                                    name = fieldName.toString(),
+                                    id = id.toString().toInt(),
+                                    estado = estado as Boolean
+                                )
+                                listaTorneos.add(torneo)
+                            }
+                            cargaRecyclerView()
+                        }
+                    } else {
+                        println("El campo Torneo no existe en el documento o no es un objeto Map.")
+                    }
+                } else {
+                    println("El documento no existe.")
+                }
+            }
+            .addOnFailureListener { e ->
+                println("Error al leer el documento: $e")
+            }
+
+    }
+
+    private fun cargaRecyclerView() {
+        val manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        val decoration = DividerItemDecoration(context, manager.orientation)
+        binding.rvTorneos.layoutManager = manager
+        binding.rvTorneos.addItemDecoration(decoration)
+        binding.rvTorneos.adapter = context?.let { TorneosAdapter(it,listaTorneos) }
     }
 
     override fun onDestroyView() {
