@@ -16,7 +16,6 @@ import com.example.tfg_championship_studio.objects.Jugadores
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -69,35 +68,74 @@ class Equipos : Fragment() {
             2 -> {
                 enfrentamientos.add(jugadoresAleatorios[0].name to jugadoresAleatorios[1].name)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Final"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
             in 3..4 -> {
                 enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Semifinal"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
             in 5..8 -> {
                 enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Cuartos"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
             in 9..16 -> {
                 enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Octavos"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
             in 17..32 -> {
                 enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Dieciseisavos"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
-            else -> {
+            in 33..64 -> {
                 enfrentamientos = emparejarParticipantes(jugadoresAleatorios)
                 GlobalData.emparejamientos = enfrentamientos
+                val ronda :String = "Treintaidosavos"
+                saveEmparejamientos(ronda)
                 cambiaEuiposFragment()
             }
         }
     }
+
+
+    private fun saveEmparejamientos(ronda: String) {
+        val id = TorneosAdapter.GlobalData.idKey
+        documentRef.update("Emparejamientos." + id.toString() + "." + ronda, createEmparejamientosMap(GlobalData.emparejamientos.size))
+            .addOnSuccessListener {
+                println("Se agregaron los emparejamientos correctamente.")
+            }
+            .addOnFailureListener { e ->
+                println("Error al agregar los emparejamientos: $e")
+            }
+    }
+
+    private fun createEmparejamientosMap(nEmparejamientos: Int): Map<String, Any> {
+        val emparejamientosMap = mutableMapOf<String, Any>()
+
+        for (i in 0 until nEmparejamientos) {
+            val emparejamientoMap = mutableMapOf<String, Any>()
+            emparejamientoMap["Equipo1"] = GlobalData.emparejamientos[i].first
+            emparejamientoMap["Equipo2"] = GlobalData.emparejamientos[i].second
+
+            emparejamientosMap["Emparejamiento" + (i + 1)] = emparejamientoMap
+        }
+
+        return emparejamientosMap
+    }
+
 
     private fun addParticipante(pList: MutableList<Jugadores>) {
         val context = requireContext()
@@ -105,6 +143,10 @@ class Equipos : Fragment() {
         val customView = inflater.inflate(R.layout.dialog_new_participante, null)
         val builder = AlertDialog.Builder(context).setView(customView).setPositiveButton(R.string.new_players_teams_dialog_btn_acept) { _, _ ->
             val name = customView.findViewById<EditText>(R.id.et_name_participante).text.toString()
+            if(name == "Nombre del campeonato" || name.startsWith(".") || name.endsWith(".") || name.contains("..") || checkName(pList, name) || name.isEmpty()){
+                showAlert()
+                return@setPositiveButton
+            }
             for (i in pList){
                 if (name == i.name){
                     showAlert()
@@ -285,5 +327,16 @@ class Equipos : Fragment() {
         binding.tvParticipantes.text = "PARTICIPANTES DEL TORNEO"
         showLongSnackbar(binding.root)
     }
+
+    private fun checkName(listaTorneos: MutableList<Jugadores>, name: String): Boolean {
+        for (torneo in listaTorneos) {
+            if (torneo.name == name){
+                return true
+            }
+        }
+
+        return false
+    }
+
 
 }

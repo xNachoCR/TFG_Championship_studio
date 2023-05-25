@@ -90,7 +90,6 @@ class MisTorneosFragment : Fragment() {
                 estado = false
             )
             listaTorneos.add(torneo)
-            initRecyclerView()
             val documentRef = db.collection("users").document(SignUpActivity.GlobalData.emailKey)
             val newTorneoData = hashMapOf(
                 "id" to tId,
@@ -99,12 +98,14 @@ class MisTorneosFragment : Fragment() {
                 "Participante" to emptyMap<String, Any>()
             )
             documentRef.update("Torneo." + name, newTorneoData)
+            cargaRecyclerView()
         }.setNegativeButton(R.string.new_tournament_dialog_btn_cancel) { _, _ ->
             //Lógica del botón
         }
 
         val dialog = builder.create()
         dialog.show()
+
     }
 
     private fun checkName(listaTorneos: MutableList<Torneos>, name: String): Boolean {

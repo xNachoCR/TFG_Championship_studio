@@ -8,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tfg_championship_studio.BottomMainActivity
 import com.example.tfg_championship_studio.R
 import com.example.tfg_championship_studio.SignUpActivity
-import com.example.tfg_championship_studio.objects.Futbol
 import com.example.tfg_championship_studio.objects.Torneos
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 
 class TorneosAdapter(private val context: Context, private val torneosList: MutableList<Torneos>): RecyclerView.Adapter<TorneosViewHolder> () {
@@ -25,8 +24,8 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
     val documentRef = FirebaseFirestore.getInstance().collection("users").document(SignUpActivity.GlobalData.emailKey)
 
     object GlobalData{
-        var nPlayers = 0
         var nameKey = ""
+        var idKey = 0
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TorneosViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -47,26 +46,13 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
             holder.binding.tvEdit.visibility = View.VISIBLE
         }
 
-        holder.binding.tvDelete.setOnClickListener {
-            torneosList.removeAt(position)
-            println(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, torneosList.size)
-            val name = item.name
-            val updates = hashMapOf<String, Any>(
-                "Torneo." + name to FieldValue.delete()
-            )
-            documentRef.update(updates)
-        }
-
-        holder.binding.tvEdit.setOnClickListener {
-            GlobalData.nameKey = torneosList[position].name
-            showBottomMain()
-        }
+        holder.binding.tvDelete.setOnClickListener { deleteTorneo(item, position)}
+        holder.binding.tvEdit.setOnClickListener { gestionarTorneo(position) }
 
         holder.binding.tvConfig.setOnClickListener {
             when (torneosList[position].icon) {
                 futbol -> {
+                    preparaBracket(position)
                     alertDialogFutbol(holder,torneosList, position)
                 }
                 tenis -> {
@@ -83,6 +69,25 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
             holder.binding.tvConfig.visibility = View.GONE
         }
 
+    }
+
+    private fun gestionarTorneo(position: Int) {
+        GlobalData.nameKey = torneosList[position].name
+        GlobalData.idKey = torneosList[position].id
+        showBottomMain()
+    }
+
+    private fun preparaBracket(position: Int) {
+        val emparejamientosData = HashMap<String, Any>()
+        emparejamientosData[torneosList[position].id.toString()] = HashMap<String, Any>()
+
+        documentRef.set(mapOf("Emparejamientos" to emparejamientosData), SetOptions.merge())
+            .addOnSuccessListener {
+                println("Se agregó el nuevo mapa correctamente en la colección 'Emparejamientos'.")
+            }
+            .addOnFailureListener { e ->
+                println("Error al agregar el nuevo mapa en la colección 'Emparejamientos': $e")
+            }
     }
 
     override fun getItemCount(): Int {
@@ -110,6 +115,18 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
         dialog.show()
 
 
+    }
+
+    private fun deleteTorneo(item: Torneos, position: Int){
+        torneosList.removeAt(position)
+        println(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, torneosList.size)
+        val name = item.name
+        val updates = hashMapOf<String, Any>(
+            "Torneo." + name to FieldValue.delete()
+        )
+        documentRef.update(updates)
     }
 }
 

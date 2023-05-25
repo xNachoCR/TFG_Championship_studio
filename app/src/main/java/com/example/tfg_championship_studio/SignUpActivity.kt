@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.tfg_championship_studio.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class SignUpActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
@@ -45,6 +46,7 @@ class SignUpActivity: AppCompatActivity() {
             data["Torneo"] = emptyMap
 
             userCollection.document(GlobalData.emailKey).set(data)
+            iniciaEmparejamientos()
             showLogin()
         }else {
             showAlert()
@@ -111,5 +113,17 @@ class SignUpActivity: AppCompatActivity() {
     private fun showLogin(){
         val loginIntent = Intent(this, LoginActivity::class.java)
         startActivity(loginIntent)
+    }
+
+    private fun iniciaEmparejamientos(){
+        val documentRef = FirebaseFirestore.getInstance().collection("users").document(SignUpActivity.GlobalData.emailKey)
+        val emparejamientosData = HashMap<String, Any>()
+        documentRef.set(mapOf("Emparejamientos" to emparejamientosData), SetOptions.merge())
+            .addOnSuccessListener {
+                println("La colección 'Emparejamientos' se creó correctamente.")
+            }
+            .addOnFailureListener { e ->
+                println("Error al crear la colección 'Emparejamientos': $e")
+            }
     }
 }
