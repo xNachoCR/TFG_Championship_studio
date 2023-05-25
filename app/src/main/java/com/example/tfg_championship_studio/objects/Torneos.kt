@@ -4,7 +4,8 @@ data class Torneos (
     var icon: Int,
     var name: String,
     var id: Int,
-    var estado: Boolean
+    var estado: Boolean,
+    var bracket: Boolean
 //    var modelPlayer: String
     )
 

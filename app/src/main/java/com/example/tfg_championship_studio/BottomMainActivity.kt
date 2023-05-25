@@ -15,7 +15,6 @@ class BottomMainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBnvBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Equipos())
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){

@@ -46,14 +46,14 @@ class Equipos : Fragment() {
     ): View? {
         binding = FragmentEquiposBinding.inflate(inflater, container, false)
 
-        binding.tvAddParticipantes.visibility = View.VISIBLE
-        binding.tvGenPartidos.visibility = View.GONE
         println(TorneosAdapter.GlobalData.nameKey)
         getParticipantes()
         get_nPlayers()
 
         binding.tvAddParticipantes.setOnClickListener { addParticipante(participantesList) }
         binding.tvGenPartidos.setOnClickListener { generarBracket(participantesList) }
+
+        checkBracket()
 
         return binding.root
     }
@@ -70,6 +70,7 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Final"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
             in 3..4 -> {
@@ -77,6 +78,7 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Semifinal"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
             in 5..8 -> {
@@ -84,6 +86,7 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Cuartos"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
             in 9..16 -> {
@@ -91,6 +94,7 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Octavos"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
             in 17..32 -> {
@@ -98,6 +102,7 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Dieciseisavos"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
             in 33..64 -> {
@@ -105,9 +110,15 @@ class Equipos : Fragment() {
                 GlobalData.emparejamientos = enfrentamientos
                 val ronda :String = "Treintaidosavos"
                 saveEmparejamientos(ronda)
+                changeBracket()
                 cambiaEuiposFragment()
             }
         }
+    }
+
+    private fun changeBracket() {
+        val data = true
+        documentRef.update("Torneo." + TorneosAdapter.GlobalData.nameKey + ".bracket", data)
     }
 
 
@@ -120,6 +131,8 @@ class Equipos : Fragment() {
             .addOnFailureListener { e ->
                 println("Error al agregar los emparejamientos: $e")
             }
+
+        showLongSnackbar(binding.root)
     }
 
     private fun createEmparejamientosMap(nEmparejamientos: Int): Map<String, Any> {
@@ -195,6 +208,7 @@ class Equipos : Fragment() {
             } else {
                 println("El documento no existe")
             }
+
         }.addOnFailureListener { e ->
             participantesList = mutableListOf<Jugadores>()
             println("Error al obtener el documento: $e")
@@ -228,6 +242,36 @@ class Equipos : Fragment() {
 
                         binding.tvParticipantes.text = binding.tvParticipantes.text.toString() + nPlayers.toString()
                         initRecyclerView(participantesList)
+                    } else {
+                        println("El objeto Champions no existe o no es un mapa")
+                    }
+                } else {
+                    println("Torneo no existe")
+                }
+            } else {
+                println("El documento no existe")
+            }
+        }.addOnFailureListener { e ->
+            println("Error al obtener el documento: $e")
+        }
+    }
+
+    private fun checkBracket(){
+        documentRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val usersData = documentSnapshot.data
+                val torneoData = usersData?.get("Torneo") as? Map<String, Any>
+
+                if (torneoData != null) {
+                    val championsData = torneoData[TorneosAdapter.GlobalData.nameKey] as? Map<String, Any>
+
+                    if (championsData != null) {
+                        val nParticipantes = championsData["nParticipantes"]
+                        nPlayers = nParticipantes.toString().toInt()
+                        val bracket = championsData["bracket"]
+                        if (bracket == true){
+                            cambiaEuiposFragment()
+                        }
                     } else {
                         println("El objeto Champions no existe o no es un mapa")
                     }
@@ -325,7 +369,6 @@ class Equipos : Fragment() {
         binding.tvAddParticipantes.visibility = View.GONE
         binding.tvGenPartidos.visibility = View.GONE
         binding.tvParticipantes.text = "PARTICIPANTES DEL TORNEO"
-        showLongSnackbar(binding.root)
     }
 
     private fun checkName(listaTorneos: MutableList<Jugadores>, name: String): Boolean {

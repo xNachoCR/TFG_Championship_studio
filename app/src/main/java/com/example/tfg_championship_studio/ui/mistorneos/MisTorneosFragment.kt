@@ -87,7 +87,8 @@ class MisTorneosFragment : Fragment() {
                 icon = icon,
                 name = name,
                 id = tId,
-                estado = false
+                estado = false,
+                bracket = false
             )
             listaTorneos.add(torneo)
             val documentRef = db.collection("users").document(SignUpActivity.GlobalData.emailKey)
@@ -95,6 +96,7 @@ class MisTorneosFragment : Fragment() {
                 "id" to tId,
                 "nParticipantes" to 0,
                 "estado" to false,
+                "bracket" to false,
                 "Participante" to emptyMap<String, Any>()
             )
             documentRef.update("Torneo." + name, newTorneoData)
@@ -146,13 +148,15 @@ class MisTorneosFragment : Fragment() {
                             if (fieldValue is Map<*, *>){
                                 val id = fieldValue["id"]
                                 val estado = fieldValue["estado"]
+                                val bracket = fieldValue["bracket"]
                                 tId = id.toString().toInt()
                                 println("Id: $id")
                                 val torneo = Torneos(
                                     icon = R.drawable.img_futbol_ball,
                                     name = fieldName.toString(),
                                     id = id.toString().toInt(),
-                                    estado = estado as Boolean
+                                    estado = estado as Boolean,
+                                    bracket = bracket as Boolean
                                 )
                                 listaTorneos.add(torneo)
                             }
