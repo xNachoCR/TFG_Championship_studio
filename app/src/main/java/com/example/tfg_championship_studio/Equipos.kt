@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private lateinit var binding: FragmentEquiposBinding
 
 object GlobalData{
     var emparejamientos = mutableListOf<Pair<String, String>>()
@@ -26,7 +27,6 @@ object GlobalData{
 class Equipos : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var binding: FragmentEquiposBinding
     private var participantesList = mutableListOf<Jugadores>()
     private var nPlayers = 0
     val db = FirebaseFirestore.getInstance()
