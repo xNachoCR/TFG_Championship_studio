@@ -22,6 +22,7 @@ class BracketAdapter (private val bracketList: List<Pair<String, String>>): Recy
             val colorL = ContextCompat.getColor(holder.itemView.context, R.color.yellow)
             holder.binding.tvWin1.setBackgroundColor(colorW)
             holder.binding.tvWin2.setBackgroundColor(colorL)
+
         }
 
         holder.binding.tvWin2.setOnClickListener {
