@@ -2,9 +2,6 @@
 <resources>
     <string-array name="spinner_sport" >
         <item>Fútbol</item>
-        <item>Tenis</item>
-        <item>Baloncesto</item>
-        <item>Motorsport</item>
     </string-array>
 
     <string-array name="spinner_n_players" >
