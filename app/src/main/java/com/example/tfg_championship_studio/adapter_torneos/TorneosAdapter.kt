@@ -52,7 +52,7 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
         holder.binding.tvConfig.setOnClickListener {
             when (torneosList[position].icon) {
                 futbol -> {
-                    preparaBracket(position)
+                    preparaBracket(holder ,position)
                     alertDialogFutbol(holder,torneosList, position)
                 }
                 tenis -> {
@@ -77,7 +77,7 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
         showBottomMain()
     }
 
-    private fun preparaBracket(position: Int) {
+    private fun preparaBracket(holder: TorneosViewHolder,position: Int) {
         val emparejamientosData = HashMap<String, Any>()
         emparejamientosData[torneosList[position].id.toString()] = HashMap<String, Any>()
 
@@ -88,6 +88,8 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
             .addOnFailureListener { e ->
                 println("Error al agregar el nuevo mapa en la colección 'Emparejamientos': $e")
             }
+
+        holder.binding.tvConfig.visibility = View.GONE
     }
 
     override fun getItemCount(): Int {
@@ -123,10 +125,15 @@ class TorneosAdapter(private val context: Context, private val torneosList: Muta
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, torneosList.size)
         val name = item.name
-        val updates = hashMapOf<String, Any>(
+        val idT = item.id
+        val updateT = hashMapOf<String, Any>(
             "Torneo." + name to FieldValue.delete()
         )
-        documentRef.update(updates)
+        val updateE = hashMapOf<String, Any>(
+            "Emparejamientos." + idT to FieldValue.delete()
+        )
+        documentRef.update(updateT)
+        documentRef.update(updateE)
     }
 }
 
