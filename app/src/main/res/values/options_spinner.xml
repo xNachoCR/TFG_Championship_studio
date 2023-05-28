@@ -77,10 +77,7 @@
     </string-array>
 
     <string-array name="spinner_bracket" >
-        <item>Liga</item>
         <item>Knockout</item>
-        <item>Liga_Knockout</item>
-        <item>Grupos_Knockout</item>
     </string-array>
 
     // Separación entre new_tournament_dialog y new_player_team_dialog
